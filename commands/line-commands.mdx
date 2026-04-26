@@ -1,0 +1,50 @@
+---
+title: "Print and delete lines using the p and d commands"
+description: "Understand how tiny-ed's 1-based line addressing works and how to use the p and d commands to print or delete single lines and ranges from the buffer."
+---
+
+tiny-ed addresses buffer content by line number, starting from 1. The `p` and `d` commands both accept a single line number or a comma-separated range, giving you precise control over which lines are printed or removed. Any address outside the valid range of the current buffer causes tiny-ed to print `?` and take no action.
+
+## Line addressing
+
+All line numbers in tiny-ed are 1-based — the first line of the buffer is line 1, not line 0. You can target a single line by prefixing the command with a number, or target a contiguous range using the `N,M` syntax where `N` is the first line and `M` is the last line, inclusive.
+
+## p — print lines
+
+The `p` command prints one or more lines from the buffer to standard output.
+
+| Form | Behavior |
+|------|----------|
+| `Np` | Print line N |
+| `N,Mp` | Print lines N through M (inclusive) |
+| `p` | Print the last line in the buffer |
+
+```text
+1p
+3,5p
+```
+
+`1p` prints the first line. `3,5p` prints lines 3, 4, and 5.
+
+## d — delete lines
+
+The `d` command removes one or more lines from the buffer. After deletion, all subsequent lines shift down to fill the gap, and the total line count decreases accordingly.
+
+| Form | Behavior |
+|------|----------|
+| `Nd` | Delete line N |
+| `N,Md` | Delete lines N through M (inclusive) |
+| `d` | Delete the last line in the buffer |
+
+```text
+2d
+4,6d
+```
+
+`2d` removes line 2 and shifts all following lines up by one. `4,6d` removes lines 4, 5, and 6 in a single operation.
+
+<Note>Line numbers are 1-based. Addressing outside the valid range prints `?` and leaves the buffer unchanged.</Note>
+
+## Error handling
+
+If the start line is less than 1, the end line exceeds the current line count, or the start line is greater than the end line, both `p` and `d` print `?` to indicate an invalid range. The buffer is not modified when an error occurs.

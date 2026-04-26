@@ -1,0 +1,47 @@
+---
+title: "Append, insert, and quit: editing text in tiny-ed"
+description: "How to add new text to the tiny-ed buffer using the a and i commands, terminate input with a dot, and exit the editor safely with q without losing unsaved work."
+---
+
+tiny-ed provides two commands for entering new text into the buffer — `a` to append after a line and `i` to insert before one — plus the `q` command to exit. Both text-entry commands switch the editor into input mode, reading lines from standard input until a line containing only a period (`.`) signals the end of input.
+
+## a — append text
+
+The `a` command enters input mode and inserts new lines immediately after line N in the buffer. If no line number is given, text is appended after the last line in the buffer.
+
+Syntax: `[N]a`
+
+```text
+3a
+This line goes after line 3.
+And this one too.
+.
+```
+
+After the command is entered, tiny-ed reads each subsequent line and inserts it into the buffer. Type a single `.` on its own line to end input and return to the command prompt.
+
+If no line number is provided, `a` appends after the last existing line, effectively adding to the end of the buffer.
+
+## i — insert text
+
+The `i` command works the same as `a` but places new lines before line N rather than after it. If no line number is given, `i` defaults to line 1, inserting before the first line in the buffer. Internally, `i` calls the same append logic at position `N-1`, so the input format and dot-termination are identical.
+
+Syntax: `[N]i`
+
+```text
+2i
+This line goes before line 2.
+.
+```
+
+The line entered above becomes the new line 2, and the previous line 2 shifts down to line 3.
+
+## q — quit
+
+Type `q` and press Enter to exit tiny-ed. The buffer is not saved automatically.
+
+<Warning>tiny-ed does not prompt you to save before quitting. Use `w` first to write the buffer to a file.</Warning>
+
+## Input termination
+
+Both `a` and `i` end input when they encounter a line consisting of exactly one period (`.`) followed by a newline. The terminator line itself is not added to the buffer. The `.` must appear alone on its own line — any additional characters on the same line will cause it to be treated as regular text and inserted into the buffer.

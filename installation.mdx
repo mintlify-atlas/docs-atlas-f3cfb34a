@@ -1,0 +1,62 @@
+---
+title: "Install tiny-ed: build from source on Unix-like systems"
+description: "tiny-ed has no external dependencies. All you need is gcc and the C standard library. Clone the repository and compile with a single command."
+---
+
+tiny-ed compiles from a single C source file with no external libraries. Installation means cloning the repository and running the compiler — there is no package manager involved and nothing to configure. The steps below cover both the `make`-based workflow and the raw `gcc` command if you prefer not to use make.
+
+## Prerequisites
+
+- **gcc** — any recent version will work; clang also works
+- **make** — optional; you can compile directly with gcc if make is not available
+- **A Unix-like operating system** — Linux, macOS, or any system with a POSIX-compatible shell
+
+## Build from source
+
+<Steps>
+  <Step title="Clone the repository">
+    Clone the tiny-ed repository to your local machine.
+
+    ```bash
+    git clone https://github.com/BrianDurham/tiny-ed.git
+    cd tiny-ed
+    ```
+  </Step>
+  <Step title="Compile">
+    Run `make` to build the binary using the project's default build rule.
+
+    ```bash
+    make
+    ```
+
+    If make is not available, compile directly with gcc:
+
+    ```bash
+    gcc -Wall -O2 -o tiny-ed tiny-ed.c
+    ```
+  </Step>
+  <Step title="Run">
+    Start the editor. tiny-ed reads commands from standard input.
+
+    ```bash
+    ./tiny-ed
+    ```
+
+    You should see a blank prompt. Type `q` and press Enter to exit.
+  </Step>
+</Steps>
+
+## Manual compilation
+
+If you want to compile without make, the full gcc command is:
+
+```bash
+gcc -Wall -O2 -o tiny-ed tiny-ed.c
+```
+
+- `-Wall` enables all common compiler warnings, which is useful if you plan to modify the source
+- `-O2` applies standard optimizations
+- `-o tiny-ed` names the output binary
+- `tiny-ed.c` is the single source file that contains the entire implementation
+
+<Note>No package manager or external dependencies are required. The only files needed to build tiny-ed are `tiny-ed.c` and a C compiler.</Note>

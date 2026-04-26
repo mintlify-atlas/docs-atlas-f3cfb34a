@@ -1,133 +1,67 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
-icon: 'star'
+title: "tiny-ed: a minimalist Unix line editor written in C"
+description: "tiny-ed is a small, old-school line editor written in C, inspired by Unix ed. Edit text files from the command line with simple, predictable commands."
 ---
 
-## Setting up
+tiny-ed is a minimalist line editor built in the spirit of the original Unix `ed`. It reads files into an in-memory buffer and lets you view, add, and delete lines using short, typed commands — no mouse, no menus, just text.
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Installation" icon="wrench" href="/installation">
+    Build tiny-ed from source with a single gcc command
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Load a file, view lines, make edits, and save in minutes
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Command reference" icon="terminal" href="/commands/file-commands">
+    Every command tiny-ed supports, with examples
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Limits & constraints" icon="gauge" href="/limits">
+    Buffer size, line length, and other built-in limits
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## How tiny-ed works
 
-Everything you need to create world-class documentation.
+tiny-ed keeps the entire file in a RAM buffer of up to 1,000 lines. You issue one command at a time — there is no visual display that refreshes. Commands address lines by number, and ranges let you target multiple lines at once.
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+<Steps>
+  <Step title="Build the editor">
+    Clone the repo and run `make` to compile the binary.
 
-## Make your content agent ready
+    ```bash
+    git clone https://github.com/BrianDurham/tiny-ed.git
+    cd tiny-ed
+    make
+    ```
+  </Step>
+  <Step title="Start tiny-ed">
+    Run the binary. tiny-ed reads commands from standard input.
 
-Make your docs work for humans and AI agents alike.
+    ```bash
+    ./tiny-ed
+    ```
+  </Step>
+  <Step title="Load a file">
+    Use the `r` command to read a file into the buffer.
 
-<Columns cols={2}>
-  <Card
-    title="Prompt component"
-    icon="robot"
-    href="/agent-ready/prompt"
-  >
-    Embed shareable AI prompts readers can copy or open in Cursor.
-  </Card>
-  <Card
-    title="Visibility"
-    icon="eye"
-    href="/agent-ready/visibility"
-  >
-    Show different content to humans and agents reading your docs.
-  </Card>
-  <Card
-    title="Contextual menu"
-    icon="bolt"
-    href="/agent-ready/contextual"
-  >
-    Give readers one-click access to Claude, ChatGPT, Cursor, and more.
-  </Card>
-  <Card
-    title="AI coding tools"
-    icon="wand-magic-sparkles"
-    href="/ai-tools/claude-code"
-  >
-    Set up Claude Code, Cursor, or Windsurf with Mintlify's skill.
-  </Card>
-</Columns>
+    ```
+    r notes.txt
+    ```
 
-## Need inspiration?
+    tiny-ed prints the number of lines read.
+  </Step>
+  <Step title="Edit and save">
+    Print, delete, or append lines, then write the buffer back to disk.
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+    ```
+    1,3p
+    2d
+    w notes.txt
+    q
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  tiny-ed is an early-stage learning project. It implements the core `ed` commands but does not aim for full POSIX `ed` compatibility.
+</Note>

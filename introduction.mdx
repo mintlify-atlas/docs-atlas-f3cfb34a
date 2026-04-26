@@ -1,0 +1,39 @@
+---
+title: "tiny-ed: minimalist line editor inspired by Unix ed"
+description: "tiny-ed is a single-file C program inspired by Unix ed. It edits text line by line from the terminal, with no visual display and no external dependencies."
+---
+
+tiny-ed is a minimalist line editor written in C and inspired by the original Unix `ed`. Rather than displaying a visual buffer that refreshes on every keystroke, it works entirely through typed commands — you address lines by number, issue a command, and see the result printed to your terminal. The entire file lives in an in-memory buffer of up to 1,000 lines, and you interact with it one command at a time.
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="wrench" href="/installation">
+    Build tiny-ed from source with a single gcc command
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Load a file, view lines, make edits, and save in minutes
+  </Card>
+</CardGroup>
+
+## Design philosophy
+
+tiny-ed exists as a learning project — a single C file with no external dependencies beyond the C standard library. The goal is to recreate the essential feel of `ed` in the smallest amount of readable code possible. There is no build system required beyond a single `gcc` invocation, no configuration files, and no runtime dependencies. If you want to understand how a line editor works at a low level, the entire implementation is in one file you can read in an afternoon.
+
+## What tiny-ed can do
+
+tiny-ed supports a focused set of commands for reading, viewing, editing, and writing text files. Line addresses are always 1-based, and ranges let you target multiple consecutive lines at once.
+
+| Command | Description |
+|---|---|
+| `r <file>` | Read a file into the buffer; prints the number of lines loaded |
+| `w <file>` | Write the current buffer to a file; prints the number of bytes written |
+| `[N]p` | Print line N; omitting N prints the last line |
+| `N,Mp` | Print lines N through M inclusive |
+| `[N]d` | Delete line N; omitting N deletes the last line |
+| `N,Md` | Delete lines N through M inclusive |
+| `[N]a` | Append text after line N; enter lines then a lone `.` to finish |
+| `[N]i` | Insert text before line N; enter lines then a lone `.` to finish |
+| `q` | Quit the editor |
+
+## What tiny-ed does not do
+
+tiny-ed is an early-stage project and intentionally limited in scope. It does not support search or search-and-replace, regular expressions, or the `s`, `g`, `/`, or `?` commands found in POSIX `ed`. It is not intended to be a drop-in replacement for `ed` and makes no claim of POSIX compatibility. The input parser is minimal and may produce a `?` error for edge cases. These limitations are expected — the project is a work in progress focused on clarity over completeness.

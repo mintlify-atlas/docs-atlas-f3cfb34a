@@ -1,0 +1,62 @@
+---
+title: "Compile and build tiny-ed from source on any Unix system"
+description: "Step-by-step instructions for compiling tiny-ed using make or gcc directly, including compiler flags and how to adjust built-in buffer limits before building."
+---
+
+tiny-ed is a single C source file with no external dependencies beyond the standard C library. Building it requires only a C compiler and takes a few seconds. You can use the provided Makefile for convenience or invoke gcc directly if make is not available on your system.
+
+## Requirements
+
+- C compiler (gcc recommended)
+- make (optional)
+- Any Unix-like system (Linux, macOS, BSD)
+
+## Using make
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/BrianDurham/tiny-ed.git
+    cd tiny-ed
+    ```
+  </Step>
+  <Step title="Build">
+    ```bash
+    make
+    ```
+    This runs `gcc -Wall -O2 -o tiny-ed tiny-ed.c`.
+  </Step>
+  <Step title="Clean build artifacts">
+    ```bash
+    make clean
+    ```
+  </Step>
+</Steps>
+
+## Manual compilation
+
+If make is not available, you can compile tiny-ed directly with gcc:
+
+```bash
+gcc -Wall -O2 -o tiny-ed tiny-ed.c
+```
+
+## Compiler flags
+
+| Flag | Effect |
+|------|--------|
+| `-Wall` | Enable all standard warnings |
+| `-O2` | Level 2 optimizations |
+
+## Customizing limits
+
+To raise or lower the buffer limits, edit the `#define` values at the top of `tiny-ed.c` before compiling:
+
+```c
+#define MAX_LINES 1000
+#define MAX_LINE_LENGTH 1024
+```
+
+After saving your changes, rebuild with `make` or the gcc command above.
+
+<Tip>Increasing MAX_LINES or MAX_LINE_LENGTH increases RAM usage proportionally.</Tip>

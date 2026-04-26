@@ -1,0 +1,36 @@
+---
+title: "Read and write files using the r and w commands in tiny-ed"
+description: "Learn how to read files into tiny-ed's buffer and write the buffer back to disk using the r and w commands, including what each command prints on success."
+---
+
+The `r` and `w` commands are how tiny-ed moves text between the in-memory buffer and the filesystem. Reading a file loads its lines into the buffer so you can work with them; writing a file persists whatever is currently in the buffer to disk. Both commands require a filename argument and print a single number on success to confirm the operation completed.
+
+## r — read a file
+
+The `r` command opens a file and reads its contents line by line into the buffer using `fgets`. After loading, it prints the number of lines read. The buffer can hold up to 1000 lines, each up to 1024 characters.
+
+Syntax: `r <filename>`
+
+```text
+r filename.txt
+42
+```
+
+The number printed is the total count of lines loaded into the buffer.
+
+<Note>Reading a file replaces the current buffer contents. Any unsaved edits are lost.</Note>
+
+## w — write to a file
+
+The `w` command opens a file for writing and writes every line currently in the buffer using `fputs`. After writing, it prints the total number of bytes written.
+
+Syntax: `w <filename>`
+
+```text
+w output.txt
+312
+```
+
+The number printed is the total byte count of all lines written to the file.
+
+<Warning>If the file already exists, it will be overwritten without confirmation.</Warning>

@@ -1,0 +1,32 @@
+---
+title: "tiny-ed buffer limits, line length, and constraints"
+description: "A reference for tiny-ed's fixed buffer sizes, line addressing rules, and memory model — covering max lines, line length, and command input limits."
+---
+
+tiny-ed stores all text in a fixed-size buffer allocated at startup. Because the buffer lives entirely in RAM and its dimensions are compile-time constants, the editor is predictable and lightweight — but it enforces hard limits on how much text it can hold and how long each line or command can be.
+
+## Buffer limits
+
+| Limit | Value | Description |
+|-------|-------|-------------|
+| Max lines | 1,000 | Total lines the buffer can hold |
+| Max line length | 1,024 bytes | Characters per line (including newline) |
+| Command input | 256 bytes | Maximum length of a command string |
+
+## What happens when limits are exceeded
+
+When you try to append a line and the buffer is already at 1,000 lines, tiny-ed prints `?` and stops accepting further input for that append session. Lines beyond `MAX_LINES` encountered while reading a file are silently dropped — the file read stops once the buffer is full, with no error beyond the line count printed on completion.
+
+Command strings longer than 256 bytes are truncated at the input buffer boundary before parsing begins.
+
+## Line addressing
+
+tiny-ed uses 1-based line addressing. The valid range for any address is 1 through the current number of lines in the buffer (`line_count`). Passing an address of 0, a negative number, or any value greater than `line_count` causes the command to print `?` and take no action.
+
+<Note>
+  These limits are compile-time constants defined in tiny-ed.c. To change them, edit the `#define` lines and recompile.
+</Note>
+
+## Memory model
+
+Each line read into the buffer is allocated individually on the heap using `strdup`, which calls `malloc` internally. The resulting pointer is stored in `buffer[MAX_LINES]`, a fixed-length array of character pointers. Lines are never explicitly freed during a session — memory is reclaimed implicitly when the process exits. Users do not need to manage memory manually.

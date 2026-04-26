@@ -1,0 +1,44 @@
+{
+  "projectType": "cli-tool",
+  "projectName": "tiny-ed",
+  "projectDescription": "A minimalist line editor written in C, inspired by the classic Unix ed, offering simple line-based text editing from the command line.",
+  "theme": "willow",
+  "primaryColor": "#3b3b3b",
+  "lightColor": "#f5f5f0",
+  "darkColor": "#1a1a1a",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": ["introduction", "installation", "quickstart"]
+      },
+      {
+        "group": "Command Reference",
+        "pages": ["commands/file-commands", "commands/line-commands", "commands/editing"]
+      },
+      {
+        "group": "Reference",
+        "pages": ["limits", "building-from-source"]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Read and write files to an in-memory line buffer",
+    "Print lines by number or range (p command)",
+    "Delete lines by number or range (d command)",
+    "Append and insert text interactively (a and i commands)",
+    "Line range addressing with comma-separated syntax (e.g. 2,5p)",
+    "Single-file C implementation — easy to read and modify",
+    "Zero dependencies beyond the C standard library",
+    "Build with a single gcc invocation"
+  ],
+  "publicApiSurface": [
+    "r <file>  — read file into buffer",
+    "w <file>  — write buffer to file",
+    "[N]p      — print line N (or range N,Mp)",
+    "[N]d      — delete line N (or range N,Md)",
+    "[N]a      — append text after line N (end with a lone '.')",
+    "[N]i      — insert text before line N (end with a lone '.')",
+    "q         — quit the editor"
+  ]
+}
